@@ -15,7 +15,11 @@ Este repositorio tiene como propósito organizar y almacenar las actividades rea
 Miembros del equipo
 -
 Lider: Nicolás Saldarriaga Arango,
+
 Miembros:
-Mariana Ossa Gutiérrez,
-Jonas Moises Chourio Rios,
+
+Mariana Ossa Gutiérrez
+
+Jonas Moises Chourio Rios
+
 Carlos Manuel Mesa Montoya
