@@ -1,4 +1,4 @@
-Institución Universitaria Pascual Bravo
+Institucion Universitaria Pascual Bravo
 -
 Programa: Ingenieria de Software
 
@@ -10,15 +10,15 @@ Grupo-B
 -
 Proposito
 -
-Este repositorio tiene como propósito organizar y almacenar las actividades realizadas para el curso de Base de Datos I.
+Este repositorio tiene como proposito organizar y almacenar las actividades realizadas para el curso de Base de Datos I.
 
 Miembros del equipo
 -
-Lider: Nicolás Saldarriaga Arango,
+Lider: Nicolas Saldarriaga Arango,
 
 Miembros:
 
-Mariana Ossa Gutiérrez
+Mariana Ossa Gutierrez
 
 Jonas Moises Chourio Rios
 
