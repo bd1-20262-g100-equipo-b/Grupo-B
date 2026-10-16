@@ -1,0 +1,320 @@
+--
+-- Scripst de Creación de la Base de Datos - SGBD MS SQL Server
+--
+-- Todas las instrucciones se DEBEN EJECUTAR EN SECUENCIA SIN ERRORES
+-- NOTA: Ojo con las tablas relacionadas. Primero las independientes y después las dependientes
+--
+
+--
+-- Creación de las tablas
+-- 
+
+-- Tabla usuario 
+--
+CREATE TABLE usuario (
+    id_usuario INT IDENTITY(1,1) PRIMARY KEY,
+    id_rol INT NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    nombre1 VARCHAR(50) NOT NULL,
+    nombre2 VARCHAR(50),
+    apellido1 VARCHAR(50) NOT NULL,
+    apellido2 VARCHAR(50),
+    CONSTRAINT fk_usuario_rol
+    FOREIGN KEY (id_rol)
+    REFERENCES rol(id_rol)
+);
+
+
+-- Tabla rol 
+--
+CREATE TABLE rol (
+    id_rol INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_rol VARCHAR(50) NOT NULL UNIQUE
+);
+
+
+-- Tabla tipo_usuario
+--
+CREATE TABLE tipo_usuario (
+    id_tipo_usuario INT IDENTITY(1,1) PRIMARY KEY
+);
+
+
+-- Tabla perfil
+--
+CREATE TABLE perfil (
+    id_perfil INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL UNIQUE,
+    descripcion VARCHAR(MAX) NOT NULL,
+    CONSTRAINT fk_perfil_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+);
+
+
+-- Tabla publicacion
+--
+CREATE TABLE publicacion (
+    id_publicacion INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    contenido VARCHAR(MAX) NOT NULL,
+    fecha_publica DATE NOT NULL,
+    CONSTRAINT fk_publicacion_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+);
+
+-- Tabla comentario
+--
+CREATE TABLE comentario (
+    id_comentario INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_publicacion INT NOT NULL,
+    contenido VARCHAR(MAX) NOT NULL,
+    fecha_coment DATE NOT NULL,
+    CONSTRAINT fk_comentario_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_comentario_publicacion
+    FOREIGN KEY (id_publicacion)
+    REFERENCES publicacion(id_publicacion)
+);
+
+
+-- Tabla grupo
+--
+CREATE TABLE grupo (
+    id_grupo INT IDENTITY(1,1) PRIMARY KEY,
+    id_perfil INT NOT NULL,
+    nombre_grupo VARCHAR(100) NOT NULL,
+    CONSTRAINT fk_grupo_perfil
+    FOREIGN KEY (id_perfil)
+    REFERENCES perfil(id_perfil)
+);
+
+
+-- Tabla servicio
+--
+CREATE TABLE servicio (
+    id_servicio INT IDENTITY(1,1) PRIMARY KEY,
+    id_tipo_servicio INT NOT NULL,
+    id_usuario INT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    descripcion VARCHAR(MAX) NOT NULL,
+    CONSTRAINT fk_servicio_tipo
+    FOREIGN KEY (id_tipo_servicio)
+    REFERENCES tipo_servicio(id_tipo_servicio),
+    CONSTRAINT fk_servicio_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+);
+
+
+-- Tabla tipo_servicio
+--
+CREATE TABLE tipo_servicio (
+    id_tipo_servicio INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+-- Tabla producto
+--
+CREATE TABLE producto (
+    id_producto INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_tipo_producto INT NOT NULL,
+    descripcion VARCHAR(MAX) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_producto_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_producto_tipo
+    FOREIGN KEY (id_tipo_producto)
+    REFERENCES tipo_producto(id_tipo_producto)
+);
+
+
+-- Tabla tipo_producto
+--
+CREATE TABLE tipo_producto (
+    id_tipo_producto INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+-- Tabla evento
+--
+CREATE TABLE evento (
+    id_evento INT IDENTITY(1,1) PRIMARY KEY,
+    id_tipo_evento INT NOT NULL,
+    id_usuario INT NOT NULL,
+    descripcion VARCHAR(MAX) NOT NULL,
+    fecha_event DATE NOT NULL,
+    detalle_logistico NVARCHAR(MAX),
+    CONSTRAINT fk_evento_tipo
+    FOREIGN KEY (id_tipo_evento)
+    REFERENCES tipo_evento(id_tipo_evento),
+    CONSTRAINT fk_evento_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+);
+
+
+-- Tabla tipo_evento
+--
+CREATE TABLE tipo_evento (
+    id_tipo_evento INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+-- Tabla notificacion
+--
+CREATE TABLE notificacion (
+    id_notificacion INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    mensaje VARCHAR(MAX) NOT NULL,
+    fecha_noti DATE NOT NULL,
+    CONSTRAINT fk_notificacion_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+);
+
+
+-- Tabla reaccion 
+--
+CREATE TABLE reaccion (
+    id_reaccion INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_publicacion INT NULL,
+    id_comentario INT NULL,
+    tipo_reaccion VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_reaccion_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_reaccion_publicacion
+    FOREIGN KEY (id_publicacion)
+    REFERENCES publicacion(id_publicacion),
+    CONSTRAINT fk_reaccion_comentario
+    FOREIGN KEY (id_comentario)
+    REFERENCES comentario(id_comentario)
+);
+
+
+-- Tabla mensaje
+--
+CREATE TABLE mensaje (
+    id_mensaje INT IDENTITY(1,1) PRIMARY KEY,
+    contenido VARCHAR(250) NOT NULL,
+    fecha_mensaje DATE NOT NULL,
+    id_emisor INT NOT NULL,
+    id_receptor INT NOT NULL,
+    CONSTRAINT fk_mensaje_emisor
+    FOREIGN KEY (id_emisor)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_mensaje_receptor
+    FOREIGN KEY (id_receptor)
+    REFERENCES usuario(id_usuario)
+);
+
+
+-- Tabla amistad
+--
+CREATE TABLE amistad (
+    id_amistad INT IDENTITY(1,1) PRIMARY KEY,
+    estado VARCHAR(20) NOT NULL,
+    id_usuario1 INT NOT NULL,
+    id_usuario2 INT NOT NULL,
+    CONSTRAINT fk_amistad_usuario1
+    FOREIGN KEY (id_usuario1)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_amistad_usuario2
+    FOREIGN KEY (id_usuario2)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT chk_amistad_usuarios
+    CHECK (id_usuario1 <> id_usuario2)
+);
+
+
+-- Tabla historial
+--
+CREATE TABLE historial (
+    id_historial INT IDENTITY(1,1) PRIMARY KEY,
+    accion VARCHAR(100) NOT NULL,
+    fecha DATE NOT NULL,
+    id_usuario INT NOT NULL,
+    CONSTRAINT fk_historial_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+);
+
+
+-- Tabla usu_parti_grupo
+--
+CREATE TABLE usu_parti_grupo (
+    id_usuario_grupo INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_grupo INT NOT NULL,
+    fecha_union DATE NOT NULL,
+    rol_grupo VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_usu_parti_grupo_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_usu_parti_grupo_grupo
+    FOREIGN KEY (id_grupo)
+    REFERENCES grupo(id_grupo)
+);
+
+
+-- Tabla usu_tipo_usu
+--
+CREATE TABLE usu_tipo_usu (
+    id_usu_tipo_usu INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_tipo_usuario INT NOT NULL,
+    CONSTRAINT fk_usu_tipo_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_usu_tipo_tipo
+    FOREIGN KEY (id_tipo_usuario)
+    REFERENCES tipo_usuario(id_tipo_usuario),
+    CONSTRAINT uk_usuario_tipo
+    UNIQUE(id_usuario,id_tipo_usuario)
+);
+
+
+-- Tabla evento_parti_usu
+--
+CREATE TABLE evento_parti_usu (
+    id_evento_usuario INT IDENTITY(1,1) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_evento INT NOT NULL,
+    fecha_inscripcion DATE NOT NULL,
+    asistencia BIT NOT NULL,
+    preguntas_evento VARCHAR(MAX),
+    CONSTRAINT fk_evento_parti_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_evento_parti_evento
+    FOREIGN KEY (id_evento)
+    REFERENCES evento(id_evento)
+);
+
+
+-- Tabla perfil_publi
+--
+CREATE TABLE perfil_publi (
+    id_perfil_publicacion INT IDENTITY(1,1) PRIMARY KEY,
+    id_perfil INT NOT NULL,
+    id_publicacion INT NOT NULL,
+    fecha_publi DATE NOT NULL,
+    CONSTRAINT fk_perfil_publi_perfil
+    FOREIGN KEY (id_perfil)
+    REFERENCES perfil(id_perfil),
+    CONSTRAINT fk_perfil_publi_publicacion
+    FOREIGN KEY (id_publicacion)
+    REFERENCES publicacion(id_publicacion),
+    CONSTRAINT uk_perfil_publicacion
+    UNIQUE(id_perfil,id_publicacion)
+);
