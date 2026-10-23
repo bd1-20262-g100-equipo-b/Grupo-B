@@ -9,6 +9,15 @@
 -- Creación de las tablas
 -- 
 
+
+-- Tabla rol 
+--
+CREATE TABLE rol (
+    id_rol SERIAL PRIMARY KEY,
+    nombre_rol VARCHAR(50) NOT NULL UNIQUE
+);
+
+
 -- Tabla usuario 
 --
 CREATE TABLE usuario (
@@ -22,13 +31,6 @@ CREATE TABLE usuario (
     CONSTRAINT fk_usuario_rol
         FOREIGN KEY (id_rol)
         REFERENCES rol(id_rol)
-);
-
--- Tabla rol 
---
-CREATE TABLE rol (
-    id_rol SERIAL PRIMARY KEY,
-    nombre_rol VARCHAR(50) NOT NULL UNIQUE
 );
 
 
@@ -89,6 +91,15 @@ CREATE TABLE grupo (
         REFERENCES perfil(id_perfil)
 );
 
+
+-- Tabla tipo_servicio
+--
+CREATE TABLE tipo_servicio (
+    id_tipo_servicio SERIAL PRIMARY KEY,
+    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
+);
+
+
 -- Tabla servicio
 --
 CREATE TABLE servicio (
@@ -105,10 +116,11 @@ CREATE TABLE servicio (
         REFERENCES usuario(id_usuario)
 );
 
--- Tabla tipo_servicio
+
+-- Tabla tipo_producto
 --
-CREATE TABLE tipo_servicio (
-    id_tipo_servicio SERIAL PRIMARY KEY,
+CREATE TABLE tipo_producto (
+    id_tipo_producto SERIAL PRIMARY KEY,
     nombre_tipo VARCHAR(100) NOT NULL UNIQUE
 );
 
@@ -129,12 +141,14 @@ CREATE TABLE producto (
         REFERENCES tipo_producto(id_tipo_producto)
 );
 
--- Tabla tipo_producto
+
+-- Tabla tipo_evento
 --
-CREATE TABLE tipo_producto (
-    id_tipo_producto SERIAL PRIMARY KEY,
+CREATE TABLE tipo_evento (
+    id_tipo_evento SERIAL PRIMARY KEY,
     nombre_tipo VARCHAR(100) NOT NULL UNIQUE
 );
+
 
 -- Tabla evento
 --
@@ -152,12 +166,6 @@ CREATE TABLE evento (
         REFERENCES usuario(id_usuario)
 );
 
--- Tabla tipo_evento
---
-CREATE TABLE tipo_evento (
-    id_tipo_evento SERIAL PRIMARY KEY,
-    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
-);
 
 -- Tabla notificacion
 --

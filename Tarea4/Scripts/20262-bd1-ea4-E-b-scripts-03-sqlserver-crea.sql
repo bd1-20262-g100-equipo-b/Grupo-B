@@ -9,6 +9,15 @@
 -- Creación de las tablas
 -- 
 
+
+-- Tabla rol 
+--
+CREATE TABLE rol (
+    id_rol INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_rol VARCHAR(50) NOT NULL UNIQUE
+);
+
+
 -- Tabla usuario 
 --
 CREATE TABLE usuario (
@@ -22,14 +31,6 @@ CREATE TABLE usuario (
     CONSTRAINT fk_usuario_rol
     FOREIGN KEY (id_rol)
     REFERENCES rol(id_rol)
-);
-
-
--- Tabla rol 
---
-CREATE TABLE rol (
-    id_rol INT IDENTITY(1,1) PRIMARY KEY,
-    nombre_rol VARCHAR(50) NOT NULL UNIQUE
 );
 
 
@@ -93,6 +94,14 @@ CREATE TABLE grupo (
 );
 
 
+-- Tabla tipo_servicio
+--
+CREATE TABLE tipo_servicio (
+    id_tipo_servicio INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
+);
+
+
 -- Tabla servicio
 --
 CREATE TABLE servicio (
@@ -110,12 +119,13 @@ CREATE TABLE servicio (
 );
 
 
--- Tabla tipo_servicio
+-- Tabla tipo_producto
 --
-CREATE TABLE tipo_servicio (
-    id_tipo_servicio INT IDENTITY(1,1) PRIMARY KEY,
+CREATE TABLE tipo_producto (
+    id_tipo_producto INT IDENTITY(1,1) PRIMARY KEY,
     nombre_tipo VARCHAR(100) NOT NULL UNIQUE
 );
+
 
 
 -- Tabla producto
@@ -135,10 +145,10 @@ CREATE TABLE producto (
 );
 
 
--- Tabla tipo_producto
+-- Tabla tipo_evento
 --
-CREATE TABLE tipo_producto (
-    id_tipo_producto INT IDENTITY(1,1) PRIMARY KEY,
+CREATE TABLE tipo_evento (
+    id_tipo_evento INT IDENTITY(1,1) PRIMARY KEY,
     nombre_tipo VARCHAR(100) NOT NULL UNIQUE
 );
 
@@ -158,14 +168,6 @@ CREATE TABLE evento (
     CONSTRAINT fk_evento_usuario
     FOREIGN KEY (id_usuario)
     REFERENCES usuario(id_usuario)
-);
-
-
--- Tabla tipo_evento
---
-CREATE TABLE tipo_evento (
-    id_tipo_evento INT IDENTITY(1,1) PRIMARY KEY,
-    nombre_tipo VARCHAR(100) NOT NULL UNIQUE
 );
 
 
